@@ -9,6 +9,16 @@
 import { initialCards } from "./cards.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -53,12 +63,16 @@ const handleProfileFormSubmit = (evt) => {
 
 const handleAvatarFromSubmit = (evt) => {
   evt.preventDefault();
+
   profileAvatar.style.backgroundImage = `url(${avatarInput.value})`;
+
+  avatarForm.reset();
   closeModalWindow(avatarFormModalWindow);
 };
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
+
   placesWrap.prepend(
     createCardElement(
       {
@@ -73,6 +87,7 @@ const handleCardFormSubmit = (evt) => {
     )
   );
 
+  cardForm.reset();
   closeModalWindow(cardFormModalWindow);
 };
 
@@ -84,16 +99,20 @@ avatarForm.addEventListener("submit", handleAvatarFromSubmit);
 openProfileFormButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
+
+  clearValidation(profileForm, validationConfig);
   openModalWindow(profileFormModalWindow);
 });
 
 profileAvatar.addEventListener("click", () => {
   avatarForm.reset();
+  clearValidation(avatarForm, validationConfig);
   openModalWindow(avatarFormModalWindow);
 });
 
 openCardFormButton.addEventListener("click", () => {
   cardForm.reset();
+  clearValidation(cardForm, validationConfig);
   openModalWindow(cardFormModalWindow);
 });
 
@@ -113,3 +132,5 @@ const allPopups = document.querySelectorAll(".popup");
 allPopups.forEach((popup) => {
   setCloseModalWindowEventListeners(popup);
 });
+
+enableValidation(validationConfig);
