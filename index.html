@@ -112,6 +112,7 @@
                 class="popup__input popup__input_type_url"
                 placeholder="Ссылка на картинку"
                 required
+                pattern="https?:\/\/.+\.[A-Za-z]{2,3}$"
               />
               <span class="popup__error" id="place-link-error"></span>
             </label>
@@ -147,6 +148,8 @@
                 class="popup__input popup__input_type_avatar"
                 placeholder="Ссылка на изображение"
                 required
+                pattern="https?:\/\/.+\.[A-Za-z]{2,3}$"
+
               />
               <span class="popup__error" id="user-avatar-error"></span>
             </label>
